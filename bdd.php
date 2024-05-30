@@ -26,9 +26,14 @@ function connexion($id) {
         $ArtStatement = $mysqlClient ->prepare($query);
         $ArtStatement->execute();
         $artArray = $ArtStatement->fetchAll();
-        // modification du tableau en fonction de la demande : soit un tableau à une dimension 
+        // modification du tableau en fonction de la demande : 
+        // Soit la demande est incohérente -> ID n'existe pas dans la base et donc le tableau n'existe pas
+        // soit un tableau à une dimension 
         // sinon un tableau à deux dimensions
-        if (isset($id)){
+        if(isset($id) && !$artArray){
+            return null;
+        }
+        elseif (isset($id)){
             return $artArray[0];
         }
         else { 

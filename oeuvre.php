@@ -1,6 +1,4 @@
 <?php
-    require 'header.php';
-    // require 'oeuvres.php';
     require 'bdd.php';
 
     // Si l'URL ne contient pas d'id, on redirige sur la page d'accueil
@@ -10,11 +8,14 @@
 
     $oeuvre = null;
     $oeuvre = connexion(intval($_GET['id']));
-
     // Si aucune oeuvre trouvé, on redirige vers la page d'accueil
     if(is_null($oeuvre)) {
         header('Location: index.php');
+        exit;
     }
+    else {
+        // obligé de le positionner ici pour que header(...); fonctionne
+        require 'header.php';
 ?>
 
 <article id="detail-oeuvre">
@@ -30,4 +31,8 @@
     </div>
 </article>
 
-<?php require 'footer.php'; ?>
+<?php 
+    require 'footer.php'; 
+    }
+    ?>
+
