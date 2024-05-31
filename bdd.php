@@ -1,6 +1,6 @@
 <?php
 // fonction de connection 
-function connexion($id) {
+function connexion() {
     try {
         $mysqlClient = new PDO(
             // mysql est le nom du container docker
@@ -14,6 +14,10 @@ function connexion($id) {
     catch(Exception $e) {
         die('erreur : ' . $e ->getMessage());
     }
+    return  $mysqlClient;
+}
+function appelDeBDD($id){
+    $mysqlClient = connexion();
     // si on n'a pas d' ID alors on récupère toute la base sinon seulement le tableau correspondant à l'ID
     if(!isset($id)){
         $query = 'SELECT * FROM oeuvres';
@@ -39,6 +43,20 @@ function connexion($id) {
         else { 
             return $artArray;
         }
+    }
+}
+
+function ajoutOeuvre($nouvelleOeuvre){
+    try {
+        $mysqlClient = connexion();
+        $query = "INSERT INTO `oeuvres` (`titre`, `description`, `artiste`, `image`) VALUES ('" . $nouvelleOeuvre['titre'] . "', '" . $nouvelleOeuvre['description'] . "', '" . $nouvelleOeuvre['artiste'] . "', '" . $nouvelleOeuvre['image'] . "')";
+        $ArtStatement = $mysqlClient ->prepare($query);
+        $ArtStatement->execute();
+        $artArray = $ArtStatement->fetchAll();
+        return 1;
+    }
+    catch(Exception $e) {
+        die('erreur : ' . $e ->getMessage());
     }
 }
 ?>

@@ -7,7 +7,7 @@
     }
 
     $oeuvre = null;
-    $oeuvre = connexion(intval($_GET['id']));
+    $oeuvre = appelDeBDD(intval($_GET['id']));
     // Si aucune oeuvre trouvé, on redirige vers la page d'accueil
     if(is_null($oeuvre)) {
         header('Location: index.php');

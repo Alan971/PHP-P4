@@ -1,4 +1,8 @@
-<?php require 'header.php'; ?>
+<?php require 'header.php'; 
+if(isset($_GET['err'])){
+echo "Formulaire non valide. veuillez le renseigner à nouveau";
+}
+?>
 
 <form action="traitement.php" method="POST">
     <div class="champ-formulaire">

@@ -5,7 +5,7 @@
 <? 
 $i=NULL;
 // $i=3;
-$oeuvres=connexion($i);
+$oeuvres=appelDeBDD($i);
 
 //  if(isset($i)){
 //     echo "<H2>Mise en avant d'un artiste : " . $ouvrage[0]['artiste'] . "</H2>";
