@@ -49,14 +49,16 @@ function appelDeBDD($id){
 function ajoutOeuvre($nouvelleOeuvre){
     try {
         $mysqlClient = connexion();
-        $query = "INSERT INTO `oeuvres` (`titre`, `description`, `artiste`, `image`) VALUES ('" . $nouvelleOeuvre['titre'] . "', '" . $nouvelleOeuvre['description'] . "', '" . $nouvelleOeuvre['artiste'] . "', '" . $nouvelleOeuvre['image'] . "')";
+        $query = "INSERT INTO `oeuvres` (`titre`, `description`, `artiste`, `image`) VALUES (?,?,?,?)";
         $ArtStatement = $mysqlClient ->prepare($query);
-        $ArtStatement->execute();
+
+        $ArtStatement->execute([$nouvelleOeuvre['titre'] , $nouvelleOeuvre['description'] , $nouvelleOeuvre['artiste'] , $nouvelleOeuvre['image']]);
         $artArray = $ArtStatement->fetchAll();
-        return 1;
+        return $mysqlClient -> lastInsertId();
     }
     catch(Exception $e) {
         die('erreur : ' . $e ->getMessage());
     }
 }
 ?>
+        
