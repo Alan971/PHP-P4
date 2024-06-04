@@ -2,7 +2,7 @@
 // fonction de connection 
 function connexion() {
     try {
-        $mysqlClient = new PDO(
+        $db = new PDO(
             // mysql est le nom du container docker
             //root et dbroot sont les login et mdp
             'mysql:host=mysql;dbname=artbox;charset=utf8',
@@ -14,51 +14,41 @@ function connexion() {
     catch(Exception $e) {
         die('erreur : ' . $e ->getMessage());
     }
-    return  $mysqlClient;
-}
-function appelDeBDD($id){
-    $mysqlClient = connexion();
-    // si on n'a pas d' ID alors on récupère toute la base sinon seulement le tableau correspondant à l'ID
-    if(!isset($id)){
-        $query = 'SELECT * FROM oeuvres';
-    }
-    else{
-        $query = "SELECT * FROM oeuvres WHERE id = " .$id;
-    }
-    // demande SQL
-    if (isset($query)){
-        $ArtStatement = $mysqlClient ->prepare($query);
-        $ArtStatement->execute();
-        $artArray = $ArtStatement->fetchAll();
-        // modification du tableau en fonction de la demande : 
-        // Soit la demande est incohérente -> ID n'existe pas dans la base et donc le tableau n'existe pas
-        // soit un tableau à une dimension 
-        // sinon un tableau à deux dimensions
-        if(isset($id) && !$artArray){
-            return null;
-        }
-        elseif (isset($id)){
-            return $artArray[0];
-        }
-        else { 
-            return $artArray;
-        }
-    }
+    return  $db;
 }
 
-function ajoutOeuvre($nouvelleOeuvre){
+function getOeuvres(){
+    $db = connexion();
+    $query = 'SELECT * FROM oeuvres';
+    $ArtStatement = $db ->prepare($query);
+    $ArtStatement->execute();
+    return $ArtStatement->fetchAll();
+}
+
+function getOeuvre($id){
+    $db = connexion();
+    $query = "SELECT * FROM oeuvres WHERE id = ?";
+    $ArtStatement = $db ->prepare($query);
+    $ArtStatement->execute([$id]);
+    $artArray = $ArtStatement->fetchAll();
+    if(!$artArray){
+        return null;
+    }
+    return $artArray[0];
+}
+
+function addOeuvre($nouvelleOeuvre){
     try {
-        $mysqlClient = connexion();
+        $db = connexion();
         $query = "INSERT INTO `oeuvres` (`titre`, `description`, `artiste`, `image`) VALUES (?,?,?,?)";
-        $ArtStatement = $mysqlClient ->prepare($query);
+        $ArtStatement = $db->prepare($query);
 
         $ArtStatement->execute([$nouvelleOeuvre['titre'] , $nouvelleOeuvre['description'] , $nouvelleOeuvre['artiste'] , $nouvelleOeuvre['image']]);
         $artArray = $ArtStatement->fetchAll();
-        return $mysqlClient -> lastInsertId();
+        return $db->lastInsertId();
     }
     catch(Exception $e) {
         die('erreur : ' . $e ->getMessage());
     }
 }
-?>
-        
+     

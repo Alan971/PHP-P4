@@ -1,21 +1,10 @@
 <?php
     require 'header.php';
     require 'bdd.php';
-?>
-<? 
-$i=NULL;
-// $i=3;
-$oeuvres=appelDeBDD($i);
+ 
+    $oeuvres = getOeuvres();
 
-//  if(isset($i)){
-//     echo "<H2>Mise en avant d'un artiste : " . $ouvrage[0]['artiste'] . "</H2>";
-//     echo"<img src=" . $ouvrage[0]['image'] ." alt=''>";
-//     }
-//     else {
-//         echo"<H2>Mise en avant de l'oeuvre de : " . $ouvrage[0][1] . "</H2>";
-//         echo"<img src=" . $ouvrage[1][4] ." alt=''>";
-//     }
-    ?>
+?>
 
 <div id="liste-oeuvres">
     <?php foreach($oeuvres as $oeuvre): ?>

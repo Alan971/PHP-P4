@@ -6,20 +6,15 @@
         header('Location: index.php');
     }
 
-    $oeuvre = null;
-    $oeuvre = appelDeBDD(intval($_GET['id']));
+    $oeuvre = getOeuvre(intval($_GET['id']));
     // Si aucune oeuvre trouvé, on redirige vers la page d'accueil
     if(is_null($oeuvre)) {
-        // ne fonctionne pas...
-        // header('Location: index.php');
-        echo "<script>window.location.href='index.php';</script>";
-        exit;
-    }
-    else {
-        // obligé de le positionner ici pour que header(...); fonctionne
-        require 'header.php';
-?>
+        header('Location: index.php');
+    } else {
 
+    require 'header.php';
+    
+?>
 <article id="detail-oeuvre">
     <div id="img-oeuvre">
         <img src="<?= $oeuvre['image'] ?>" alt="<?= $oeuvre['titre'] ?>">
@@ -35,6 +30,6 @@
 
 <?php 
     require 'footer.php'; 
-    }
+}
     ?>
 

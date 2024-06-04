@@ -9,7 +9,7 @@ if(isset($_POST['titre']) && isset($_POST['artiste']) && strlen($_POST['descript
     $controlData['description'] = trim(htmlspecialchars($controlData['description']));
 
     // enregistrement de la donnée
-    $nouvelID = ajoutOeuvre($controlData);
+    $nouvelID = addOeuvre($controlData);
     if(isset($nouvelID)){
         // ne fonctionne pas alors que la page est vide du coup j'utilise le javascript
         // header('location : oeuvre.php?id=' . $nouvelID);
@@ -26,4 +26,3 @@ else{
     require 'header.php';
     echo "une erreur est survenue";
 }
-?>
